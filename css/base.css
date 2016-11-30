@@ -1,0 +1,98 @@
+@charset "UTF-8";
+html {
+    font-size: 12px;
+}
+
+* {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code,
+form, fieldset, legend, input, textarea, select, p, blockquote, th, td,
+hr, button, article, aside, details, figcaption, figure, footer, header,
+hgroup, menu, nav, section, i, em {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, STHeiTi, sans-serif;
+}
+
+ul, ol, li {
+    list-style: none;
+}
+
+input, select, img, .textarea {
+    vertical-align: baseline;
+}
+
+img {
+    border: 0 none;
+    font-size:0.24rem;
+}
+
+* {
+    outline: none;
+}
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+    overflow: hidden;
+    font-size: 0;
+    height: 0;
+}
+
+.clearfix {
+    zoom: 1; /* IE < 8 */
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.over-dotted {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    word-break: normal;
+    word-wrap: normal; /* initial; */
+}
+
+a:link {
+    text-decoration: none;
+    color:#353d44;
+}
+
+
+a:visited {
+    text-decoration: none;
+    color:#353d44;
+}
+
+
+a:hover {
+    text-decoration: none;
+    color:#353d44;
+}
+
+
+a:active {
+    text-decoration: none;
+    color:#353d44;
+}
+
+
+
+textarea, input {
+    resize: none;
+    outline: none;
+}
