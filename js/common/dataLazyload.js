@@ -42,6 +42,7 @@
         var pams = getData(jq, "options");
 
         if (!!pams) {
+        	
             var btm = pams.bottom;
             var h = document.documentElement.offsetHeight || document.body.offsetHeight, iH = window.innerHeight;
             if (window.pageYOffset + iH + btm >= h) {
@@ -120,7 +121,7 @@
                     totalPage: 2,//总页数
                     url: "?",//页面请求url
                     isApp: false,//定位的时候用到,是否app也支持h5定位
-                    bottom: 80,//距离底部多高的距离加载下一页请求
+                    bottom: 100,//距离底部多高的距离加载下一页请求
                     isSetStation: false,//是否需要页面定位仅支持h5页面定位记录
                     success: function (jq, data) {//数据执行的回调函数
                     }
@@ -190,8 +191,13 @@
             if ((!!pams.isApp || !!!device.isApp) && !!getStation && !!getStation.pageTop && !!getStation.pageNum) {
                 if (getStation.pageNum > 1) {
                     for (var i = getStation.tempPageNum; i <= getStation.pageNum; i++) {
-                        $.fn.dataLazyload.method["pageNumber"](jq, i);
+
+                    	$.fn.dataLazyload.method["pageNumber"](jq, i);
                         loadData(jq);
+                        var currentScrolltop=$(window).scrollTop();
+                        if(currentScrolltop>=getStation.pageTop){
+                            break;
+                        }
                     }
                 }
                 else{
@@ -202,7 +208,9 @@
                 }, 0);
             }
             else {
-                loadData(jq);
+
+            	loadData(jq);
+
                 setStation(jq);
             }
         },
@@ -223,7 +231,10 @@
                     sessionStorage.setItem("lazyData_" + name + "_" + $(jq).index() + "_pageNumber", pams.pageNumber);
                 }
             }
-            loadData(jq);
+
+        	loadData(jq);
+
+           
             setStation(jq);
 
         },
