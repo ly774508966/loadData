@@ -120,6 +120,7 @@
                     pageNumber: 1,//当前页码
                     totalPage: 2,//总页数
                     url: "?",//页面请求url
+                    isReset:false,//是否要重新重置数据
                     isApp: false,//定位的时候用到,是否app也支持h5定位
                     bottom: 100,//距离底部多高的距离加载下一页请求
                     isSetStation: false,//是否需要页面定位仅支持h5页面定位记录
@@ -189,7 +190,7 @@
             eventListener(jq);
             var pams = getData(jq, "options");
             if ((!!pams.isApp || !!!device.isApp) && !!getStation && !!getStation.pageTop && !!getStation.pageNum) {
-                if (getStation.pageNum > 1) {
+                if (getStation.pageNum > 1&&(pams.totalPage>1&&getStation.tempPageNum>1)) {
                     for (var i = getStation.tempPageNum; i <= getStation.pageNum; i++) {
 
                     	$.fn.dataLazyload.method["pageNumber"](jq, i);
@@ -201,7 +202,13 @@
                     }
                 }
                 else{
-                    loadData(jq);
+                	
+                	if(!(pams.pageNumber>1)){  //如果请求的页面从2页开始,则调用时不需要请求数据
+                        loadData(jq);
+                    }
+                    else{
+                 	   $(jq).data("lazyData").options.pageNumber=1;//把初始分页重新设置成1,则滚动加载从2页开始
+                     }
                 }
                 setTimeout(function () {
                     $(window).scrollTop(getStation.pageTop);
@@ -209,8 +216,13 @@
             }
             else {
 
-            	loadData(jq);
-
+               if(!(pams.pageNumber>1)){  //如果请求的页面从2页开始,则调用时不需要请求数据
+                   loadData(jq);
+               }
+               else{
+            	   $(jq).data("lazyData").options.pageNumber=1;//把初始分页重新设置成1,则滚动加载从2页开始
+                   
+               }
                 setStation(jq);
             }
         },
@@ -218,24 +230,28 @@
         reinit: function (jq, params) {
             setData(jq, "options", $.extend({}, $(jq).data("lazyData").options, params));
             setData(jq, "tempPageNum", $(jq).data("lazyData").options.pageNumber);
-            $(jq).children().remove();
-            eventListener(jq);
             var pams = getData(jq, "options");
-            if (pams.isSetStation == true) {
-                if (!!window.sessionStorage) {
-                    var name = !!$(jq).className ? $(jq).className : $(jq).attr("id");
-                    if (!!!name) {
-                        name = $(jq)[0].getElementsByTagName();
+            if(pams.isReset){  //如果点击切抱分页列表,不需要重新加载数据,则不走里面的代码,也不需要重新定位
+                $(jq).children().remove();
+                eventListener(jq);
+
+                if (pams.isSetStation == true) {
+                    if (!!window.sessionStorage) {
+                        var name = !!$(jq).className ? $(jq).className : $(jq).attr("id");
+                        if (!!!name) {
+                            name = $(jq)[0].getElementsByTagName();
+                        }
+                        sessionStorage.setItem("lazyData_" + name + "_" + $(jq).index() + "_sTop", 0);
+                        sessionStorage.setItem("lazyData_" + name + "_" + $(jq).index() + "_pageNumber", pams.pageNumber);
                     }
-                    sessionStorage.setItem("lazyData_" + name + "_" + $(jq).index() + "_sTop", 0);
-                    sessionStorage.setItem("lazyData_" + name + "_" + $(jq).index() + "_pageNumber", pams.pageNumber);
                 }
+
+                loadData(jq);
+
+                setStation(jq);
             }
 
-        	loadData(jq);
 
-           
-            setStation(jq);
 
         },
         //取得当前页面定位数据信息
